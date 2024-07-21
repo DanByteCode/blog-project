@@ -9,6 +9,7 @@ export default function Header() {
   const path = useLocation()
   async function closeSession(e) {
     await getFromAPI('acount/logout')
+    document.cookie = 'API_USER_TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC;'
     updateStatus()
   }
   return (
@@ -37,8 +38,9 @@ export default function Header() {
           <ul>
             <li>{user?.name}</li>
             <li>
-                  <button title='Close session'
-                    onClick={closeSession}><ExitIcon className="exit-btn"/></button>
+              <button title="Close session" onClick={closeSession}>
+                <ExitIcon className="exit-btn" />
+              </button>
             </li>
           </ul>
         )}

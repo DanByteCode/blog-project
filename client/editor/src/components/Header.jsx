@@ -9,6 +9,7 @@ export default function Header() {
   const path = useLocation()
   async function closeSession() {
     await getFromAPI('acount/logout')
+    document.cookie = 'API_USER_TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC;'
     updateStatus()
   }
   return (

@@ -27,5 +27,5 @@ app.use('/', index)
 app.use(errorHandler)
 
 app.listen(config.PORT, () => {
-  console.log('Server online: http://localhost:' + config.PORT)
+  console.log('Server online on PORT:' + config.PORT)
 })
