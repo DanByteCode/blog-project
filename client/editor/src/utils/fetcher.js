@@ -1,4 +1,5 @@
-const routeToFecth = path => `https://blog-project-dbc.up.railway.app/api/${path}`
+const URL_API = 'https://blog-project-dbc.up.railway.app'
+const routeToFecth = path => `${URL_API}/api/${path}`
 
 export async function getFromAPI (action) {
   try {
@@ -13,7 +14,7 @@ export async function getFromAPI (action) {
 export async function sendFormToAPI (event) {
   event.preventDefault()
   const formData = new FormData(event.target).entries()
-  return await sendRequest('POST', event.target.action, Object.fromEntries(formData))
+  return await sendRequest('POST', `${URL_API}${event.target.attributes[1].value}`, Object.fromEntries(formData))
 }
 
 export async function postToAPI (action, objectToSend) {
