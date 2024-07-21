@@ -16,7 +16,7 @@ async function login (credentials, model, result) {
       }
       const token = jwt.sign(data, config.SECRET, { expiresIn: '7d' })
       result.cookie('API_USER_TOKEN', token, {
-        httpOnly: false,
+        httpOnly: true,
         secure: true,
         sameSite: 'none'
       })
@@ -50,8 +50,7 @@ async function loginEditor (req, res, next) {
   }
 }
 function logout (req, res, next) {
-  res.clearCookie('API_USER_TOKEN')
-  res.json({ status: 'Session closed' })
+  res.clearCookie('API_USER_TOKEN').json({ status: 'Session closed' })
 }
 function status (req, res, next) {
   const info = req.session?.user ?? null
