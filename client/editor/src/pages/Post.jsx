@@ -4,7 +4,7 @@ import Loader from '../assets/Loader'
 import CommentBox from '../components/CommentBox'
 import { deleteToAPI, getFromAPI } from '../utils/fetcher'
 import { useUser } from '../hooks/useUser'
-import {  Editor } from 'draft-js'
+import { Editor } from 'draft-js'
 import EditIcon from '../assets/EditIcon'
 import DeleteIcon from '../assets/DeleteIcon'
 import NewTabIcon from '../assets/NewTabIcon'
@@ -53,7 +53,7 @@ export default function Post() {
             <h3>Comments</h3>
             {post.comments?.length > 0 ? (
               <div className="comment-list">
-                <AnimatePresence mode='popLayout'>
+                <AnimatePresence mode="popLayout">
                   {post.comments.map((c) => {
                     return (
                       <CommentBox
@@ -73,6 +73,7 @@ export default function Post() {
           <div className="tip section">
             If you want to make a comment, go to the{' '}
             <a
+              target="_blank"
               className="redirect"
               href="https://blog-project-dbc.up.railway.app"
             >
