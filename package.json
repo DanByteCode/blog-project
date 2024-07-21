@@ -1,0 +1,32 @@
+{
+  "name": "blog-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/server/app.js",
+  "workspaces": [
+    "/server",
+    "/client/user",
+    "/client/editor"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=client/user",
+    "start": "npm run start --workspace=server",
+    "dev:api": "npm run dev --workspace=server",
+    "dev:editor": "npm run dev --workspace=client/editor",
+    "dev:user": "npm run dev --workspace=client/user"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "standard": "^17.1.0"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  },
+  "dependencies": {
+    "@draft-js-plugins/static-toolbar": "^4.1.4",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
