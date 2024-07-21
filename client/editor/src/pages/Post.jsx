@@ -4,15 +4,13 @@ import Loader from '../assets/Loader'
 import CommentBox from '../components/CommentBox'
 import { deleteToAPI, getFromAPI } from '../utils/fetcher'
 import { useUser } from '../hooks/useUser'
-import { convertFromRaw, Editor, EditorState } from 'draft-js'
+import {  Editor } from 'draft-js'
 import EditIcon from '../assets/EditIcon'
 import DeleteIcon from '../assets/DeleteIcon'
 import NewTabIcon from '../assets/NewTabIcon'
+import { AnimatePresence } from 'framer-motion'
+import { convertToEditor } from '../utils/convertEditor'
 
-const convert = (message) =>
-  EditorState.createWithContent(
-    convertFromRaw({ blocks: message, entityMap: {} })
-  )
 export default function Post() {
   const { id } = useParams()
   const [post, setPost] = useAPI(`post/${id}`)
@@ -24,11 +22,13 @@ export default function Post() {
     setPost({ ...post, comments: newComments })
   }
   async function deletePost() {
-    deleteToAPI(`/post/${id}`).then(() => {
-      navigate('/')
-    }).catch(() => {
-      console.error('Error on delete')
-    })
+    deleteToAPI(`/post/${id}`)
+      .then(() => {
+        navigate('/')
+      })
+      .catch(() => {
+        console.error('Error on delete')
+      })
   }
   return (
     <>
@@ -36,8 +36,8 @@ export default function Post() {
         <main>
           <article className="main-post">
             <h2>{post.title}</h2>
-            <h4 className='post-editor'>{ post.author.name}</h4>
-            <Editor readOnly={true} editorState={convert(post.body)} />
+            <h4 className="post-editor">{post.author.name}</h4>
+            <Editor readOnly={true} editorState={convertToEditor(post.body)} />
             {post.author.id === user.id && (
               <div className="post-options">
                 <Link to={`/edit/${post.id}`} state={post} title="Edit Post">
@@ -53,16 +53,18 @@ export default function Post() {
             <h3>Comments</h3>
             {post.comments?.length > 0 ? (
               <div className="comment-list">
-                {post.comments.map((c) => {
-                  return (
-                    <CommentBox
-                      key={c.id}
-                      comment={c}
-                      modificable={c.author.id === user.id}
-                      reloadComments={reloadComments}
-                    />
-                  )
-                })}
+                <AnimatePresence mode='popLayout'>
+                  {post.comments.map((c) => {
+                    return (
+                      <CommentBox
+                        key={c.id}
+                        comment={c}
+                        modificable={c.author.id === user.id}
+                        reloadComments={reloadComments}
+                      />
+                    )
+                  })}
+                </AnimatePresence>
               </div>
             ) : (
               <span>No Comments</span>
@@ -70,7 +72,10 @@ export default function Post() {
           </footer>
           <div className="tip section">
             If you want to make a comment, go to the{' '}
-            <a className="redirect" href="https://blog-project-dbc.up.railway.app">
+            <a
+              className="redirect"
+              href="https://blog-project-dbc.up.railway.app"
+            >
               User
               <NewTabIcon />
             </a>{' '}

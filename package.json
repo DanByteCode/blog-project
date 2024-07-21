@@ -24,9 +24,5 @@
   },
   "eslintConfig": {
     "extends": "standard"
-  },
-  "dependencies": {
-    "@draft-js-plugins/static-toolbar": "^4.1.4",
-    "jsonwebtoken": "^9.0.2"
   }
 }

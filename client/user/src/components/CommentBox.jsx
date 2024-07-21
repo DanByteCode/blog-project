@@ -5,6 +5,8 @@ import { deleteToAPI, patchToAPI } from '../utils/fetcher'
 import UserIcon from '../assets/UserIcon'
 import DeleteIcon from '../assets/DeleteIcon'
 import EditIcon from '../assets/EditIcon'
+import { convertToEditor } from '../utils/convertEditor'
+import { motion } from 'framer-motion'
 
 const convert = (message) =>
   EditorState.createWithContent(
@@ -13,7 +15,7 @@ const convert = (message) =>
 
 export default function CommentBox({ comment, modificable, reloadComments }) {
   const [editMode, setEditMode] = useState(false)
-  const [text, setText] = useState(convert(comment.message))
+  const [text, setText] = useState(convertToEditor(comment.message))
   async function uploadMessage(message) {
     patchToAPI(`comment/${comment.id}`, {
       message: message.blocks,
@@ -29,7 +31,7 @@ export default function CommentBox({ comment, modificable, reloadComments }) {
     })
   }
   return (
-    <div className="message">
+    <motion.div layout layoutId={comment.id} className="message">
       <h4>
         <UserIcon />
         {comment.author.name}
@@ -59,6 +61,6 @@ export default function CommentBox({ comment, modificable, reloadComments }) {
           <button onClick={() => setEditMode(false)}>Cancel</button>
         </EditorBox>
       )}
-    </div>
+    </motion.div>
   )
 }

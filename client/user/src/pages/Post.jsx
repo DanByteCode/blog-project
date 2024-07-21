@@ -6,8 +6,10 @@ import CommentBox from '../components/CommentBox'
 import { getFromAPI } from '../utils/fetcher'
 import { useUser } from '../hooks/useUser'
 import { Editor } from 'draft-js'
+import { AnimatePresence } from 'framer-motion'
 import { convertToEditor } from '../utils/convertEditor'
 import NewTabIcon from '../assets/NewTabIcon'
+
 export default function Post() {
   const { id } = useParams()
   const [post, setPost] = useAPI(`post/${id}`)
@@ -31,16 +33,18 @@ export default function Post() {
             <CommentPanel reference={id} reloadComments={reloadComments} />
             {post.comments?.length > 0 ? (
               <div className="comment-list">
-                {post.comments.map((c) => {
-                  return (
-                    <CommentBox
-                      key={c.id}
-                      comment={c}
-                      modificable={c.author.id === user.id}
-                      reloadComments={reloadComments}
-                    />
-                  )
-                })}
+                <AnimatePresence mode="sync">
+                  {post.comments.map((c) => {
+                    return (
+                      <CommentBox
+                        key={c.id}
+                        comment={c}
+                        modificable={c.author.id === user.id}
+                        reloadComments={reloadComments}
+                      />
+                    )
+                  })}
+                </AnimatePresence>
               </div>
             ) : (
               <span>No Comments</span>
@@ -48,7 +52,10 @@ export default function Post() {
           </footer>
           <div className="tip section">
             If you want to make a post, go to the{' '}
-            <a className="redirect" href="https://blog-project-editor.netlify.app">
+            <a
+              className="redirect"
+              href="https://blog-project-editor.netlify.app"
+            >
               Editor
               <NewTabIcon />
             </a>{' '}

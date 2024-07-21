@@ -1,25 +1,22 @@
-import { convertFromRaw, Editor, EditorState } from 'draft-js'
+import { Editor } from 'draft-js'
 import { useState } from 'react'
 import EditorBox from './TextEditor/EditorBox'
 import { deleteToAPI, patchToAPI } from '../utils/fetcher'
 import UserIcon from '../assets/UserIcon'
 import DeleteIcon from '../assets/DeleteIcon'
 import EditIcon from '../assets/EditIcon'
-
-const convert = (message) =>
-  EditorState.createWithContent(
-    convertFromRaw({ blocks: message, entityMap: {} })
-  )
+import { convertToEditor } from '../utils/convertEditor'
+import { motion } from 'framer-motion'
 
 export default function CommentBox({ comment, modificable, reloadComments }) {
   const [editMode, setEditMode] = useState(false)
-  const [text, setText] = useState(convert(comment.message))
+  const [text, setText] = useState(convertToEditor(comment.message))
   async function uploadMessage(message) {
     patchToAPI(`comment/${comment.id}`, {
       message: message.blocks,
     }).then((res) => {
       setEditMode(false)
-      setText(convert(res.message))
+      setText(convertToEditor(res.message))
       reloadComments()
     })
   }
@@ -29,7 +26,7 @@ export default function CommentBox({ comment, modificable, reloadComments }) {
     })
   }
   return (
-    <div className="message">
+    <motion.div layout layoutId={comment.id} className="message">
       <h4>
         <UserIcon />
         {comment.author.name}
@@ -38,20 +35,19 @@ export default function CommentBox({ comment, modificable, reloadComments }) {
         <>
           <Editor className="editor-box" editorState={text} readOnly={true} />
           {modificable && (
-            <div className='options'>
-              <button title="Edit Comment"
-                onClick={() => setEditMode(true)}>
-                <EditIcon className="edit-btn"/>
+            <div className="options">
+              <button title="Edit Comment" onClick={() => setEditMode(true)}>
+                <EditIcon className="edit-btn" />
               </button>
               <button title="Delete Comment" onClick={deleteComment}>
-                <DeleteIcon className="delete-btn"/>
+                <DeleteIcon className="delete-btn" />
               </button>
             </div>
           )}
         </>
       ) : (
-          <EditorBox
-            textButton='Edit'
+        <EditorBox
+          textButton="Edit"
           editable={!editMode}
           editorStatus={text}
           sendFunction={uploadMessage}
@@ -59,6 +55,6 @@ export default function CommentBox({ comment, modificable, reloadComments }) {
           <button onClick={() => setEditMode(false)}>Cancel</button>
         </EditorBox>
       )}
-    </div>
+    </motion.div>
   )
 }
