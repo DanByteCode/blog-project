@@ -53,6 +53,7 @@ export default function Post() {
           <div className="tip section">
             If you want to make a post, go to the{' '}
             <a
+              target='_blank'
               className="redirect"
               href="https://blog-project-editor.netlify.app"
             >
