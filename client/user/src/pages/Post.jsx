@@ -50,18 +50,6 @@ export default function Post() {
               <span>No Comments</span>
             )}
           </footer>
-          <div className="tip section">
-            If you want to make a post, go to the{' '}
-            <a
-              target='_blank'
-              className="redirect"
-              href="https://blog-project-editor.netlify.app"
-            >
-              Editor
-              <NewTabIcon />
-            </a>{' '}
-            page.
-          </div>
         </main>
       ) : (
         <Loader className="centralized" />
