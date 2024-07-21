@@ -17,7 +17,7 @@ async function login (credentials, model, result) {
       const token = jwt.sign(data, config.SECRET, { expiresIn: '7d' })
       result.cookie('API_USER_TOKEN', token, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: 'none'
       })
       result.status(202).json({
